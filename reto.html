@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reto Naturalista 2026 - Zona Oriente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --natural-green: #2d5a27; --leaf-green: #4f772d; --earth-brown: #604d3f; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
+        .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1500829243541-74b677fecc30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; }
+        .btn-nature { background-color: var(--leaf-green); transition: 0.3s; }
+        .btn-nature:hover { background-color: var(--natural-green); transform: scale(1.05); }
+        #popup { display: flex; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 relative">
+
+    <div id="popup" class="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 md:p-8 w-[95%] max-w-md text-center shadow-2xl border-t-8 border-green-600">
+            <h2 class="text-2xl md:text-3xl font-bold text-green-800 mb-4">🌿 ¡Únete al Reto!</h2>
+            <p class="mb-6 text-sm md:text-base text-gray-600">Del <b>24 al 27 de Abril</b>, ayúdanos a romper el récord de 150,000 fotos en la CDMX y el Oriente. ¡Toda forma de vida cuenta!</p>
+            <button onclick="document.getElementById('popup').style.display='none'" class="w-full btn-nature text-white px-6 py-3 rounded-full font-bold shadow-lg text-sm md:text-base">¡VAMOS A PARTICIPAR!</button>
+        </div>
+    </div>
+
+    <nav class="bg-white shadow-md sticky top-0 z-40 relative">
+        <div class="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-xl md:text-2xl font-bold text-green-700">BioOriente 2026</span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8 font-medium">
+                <a href="#pasos" class="hover:text-green-600">Cómo Participar</a>
+                <a href="#parques" class="hover:text-green-600">Dónde ir</a>
+                <a href="#consejos" class="hover:text-green-600">Consejos</a>
+                <a href="#registro" class="btn-nature text-white px-4 py-2 rounded-lg">Registro</a>
+            </div>
+
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-green-700 focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden absolute w-full bg-white shadow-lg border-t flex-col space-y-4 p-6 font-medium text-center z-40">
+            <a href="#pasos" class="block hover:text-green-600" onclick="toggleMenu()">Cómo Participar</a>
+            <a href="#parques" class="block hover:text-green-600" onclick="toggleMenu()">Dónde ir</a>
+            <a href="#consejos" class="block hover:text-green-600" onclick="toggleMenu()">Consejos</a>
+            <a href="#registro" class="block bg-green-600 text-white px-4 py-3 rounded-lg mt-2" onclick="toggleMenu()">Ir al Registro</a>
+        </div>
+    </nav>
+
+    <header class="hero min-h-screen flex flex-col justify-center items-center text-center text-white px-4 py-20">
+        <h1 class="text-4xl md:text-7xl font-extrabold mb-4 drop-shadow-lg leading-tight">Reto Naturalista <br class="md:hidden">2026</h1>
+        <p class="text-lg md:text-2xl max-w-2xl mb-8 font-light px-2">Transforma tu celular en una herramienta científica. ¡Del 24 al 27 de abril!</p>
+        <div class="bg-green-600 bg-opacity-90 p-3 md:p-4 rounded-xl text-base md:text-lg font-bold shadow-lg">
+            Meta Global: +150,000 Observaciones 📸
+        </div>
+    </header>
+
+    <section id="pasos" class="py-16 md:py-20 container mx-auto px-4 md:px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-green-900 mb-10">Pasos para participar</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-center">
+            <div class="p-6 bg-white rounded-xl shadow-sm border-b-4 border-green-500">
+                <div class="text-5xl mb-4">📱</div>
+                <h3 class="text-xl font-bold mb-2">1. Descarga la App</h3>
+                <p class="text-gray-600 text-sm md:text-base">Busca <b>iNaturalist</b> en tu tienda de apps y crea tu cuenta gratuita.</p>
+            </div>
+            <div class="p-6 bg-white rounded-xl shadow-sm border-b-4 border-green-500">
+                <div class="text-5xl mb-4">📷</div>
+                <h3 class="text-xl font-bold mb-2">2. Toma Fotos</h3>
+                <p class="text-gray-600 text-sm md:text-base">Del 24 al 27 de abril, fotografía plantas, insectos o animales en tu zona.</p>
+            </div>
+            <div class="p-6 bg-white rounded-xl shadow-sm border-b-4 border-green-500">
+                <div class="text-5xl mb-4">📤</div>
+                <h3 class="text-xl font-bold mb-2">3. Sube y Comparte</h3>
+                <p class="text-gray-600 text-sm md:text-base">Sube tus fotos a la plataforma. Los expertos ayudarán a identificar la especie.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="parques" class="py-16 md:py-20 bg-green-50">
+        <div class="container mx-auto px-4 md:px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-green-900 mb-4">¿Dónde tomar fotos?</h2>
+            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto text-sm md:text-base">¡No solo en parques! Puedes participar desde el <b>jardín de tu casa</b>, la banqueta o los árboles de tu calle.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-5 rounded-lg shadow">
+                    <h4 class="font-bold text-green-700 text-lg">📍 Iztapalapa</h4>
+                    <ul class="mt-3 space-y-2 text-sm text-gray-700">
+                        <li>• Parque Yautitla (Sede principal)</li>
+                        <li>• Cerro de la Estrella</li>
+                        <li>• Parque Cuitláhuac</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-5 rounded-lg shadow">
+                    <h4 class="font-bold text-green-700 text-lg">📍 Edomex Oriente</h4>
+                    <ul class="mt-3 space-y-2 text-sm text-gray-700">
+                        <li>• Chimalhuacán (Cerro de las Palomas)</li>
+                        <li>• Neza (Parque del Pueblo)</li>
+                        <li>• Chalco y Valle de Chalco</li>
+                    </ul>
+                </div>
+                <div class="bg-green-700 text-white p-5 rounded-lg shadow flex flex-col justify-center text-center">
+                    <p class="italic font-bold text-sm md:text-base">"Cualquier maceta con flores o árbol en tu casa es un micro-ecosistema. ¡Participa desde casa!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="consejos" class="py-16 md:py-20 container mx-auto px-4 md:px-6">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-green-900 mb-10">Consejos para fotos</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-center">
+            <div class="px-4">
+                <div class="bg-yellow-100 p-5 rounded-full inline-block mb-3 text-2xl">🔍</div>
+                <h4 class="font-bold text-lg">Enfoque claro</h4>
+                <p class="text-sm text-gray-600 mt-2">Asegúrate de que el sujeto esté bien enfocado para facilitar su identificación.</p>
+            </div>
+            <div class="px-4">
+                <div class="bg-yellow-100 p-5 rounded-full inline-block mb-3 text-2xl">📐</div>
+                <h4 class="font-bold text-lg">Varios ángulos</h4>
+                <p class="text-sm text-gray-600 mt-2">Toma fotos de las hojas, las flores y el tallo si es una planta.</p>
+            </div>
+            <div class="px-4">
+                <div class="bg-yellow-100 p-5 rounded-full inline-block mb-3 text-2xl">🚫</div>
+                <h4 class="font-bold text-lg">Solo silvestres</h4>
+                <p class="text-sm text-gray-600 mt-2">Evita subir fotos de tus mascotas o animales domésticos.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="registro" class="py-16 md:py-20 bg-gray-900 text-white">
+        <div class="container mx-auto px-4 md:px-6 max-w-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">Regístrate en el Equipo</h2>
+            <form class="space-y-4">
+                <input type="text" placeholder="Nombre completo" class="w-full p-4 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 outline-none text-sm md:text-base">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input type="number" placeholder="Edad" class="p-4 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 outline-none text-sm md:text-base w-full">
+                    <select class="p-4 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 outline-none text-sm md:text-base w-full">
+                        <option>Zona: Iztapalapa</option>
+                        <option>Zona: Chimalhuacán</option>
+                        <option>Zona: Neza</option>
+                        <option>Zona: Chalco / Valle</option>
+                        <option>Otro Municipio</option>
+                    </select>
+                </div>
+                <input type="email" placeholder="Correo electrónico" class="w-full p-4 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 outline-none text-sm md:text-base">
+                <button type="button" class="w-full btn-nature py-4 mt-2 rounded-lg font-bold uppercase tracking-wider text-sm md:text-base">Unirme al Reto</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="py-10 bg-white text-center border-t">
+        <div class="container mx-auto px-4">
+            <p class="text-gray-500 mb-6 font-bold uppercase tracking-widest text-xs md:text-sm">Escuelas y Sedes Oficiales</p>
+            <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10 opacity-70">
+                <div class="font-bold text-lg md:text-xl text-blue-900 italic">TecNM</div>
+                <div class="font-bold text-lg md:text-xl text-green-800">Parque Yautitla</div>
+                <div class="font-bold text-lg md:text-xl text-gray-700">Iztapalapa III</div>
+                <div class="font-bold text-lg md:text-xl text-red-700 italic">Escorpiones Team</div>
+            </div>
+            <p class="mt-10 text-gray-400 text-xs md:text-sm">© 2026 Plataforma de Ciencia Ciudadana - Reto Naturalista Oriente.</p>
+        </div>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        // Alternar menú al tocar el botón de hamburguesa
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+        });
+
+        // Ocultar el menú al hacer clic en un enlace (para móviles)
+        function toggleMenu() {
+            if(!menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+            }
+        }
+    </script>
+</body>
+</html>
