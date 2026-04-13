@@ -3,186 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reto Naturalista 2026 - Zona Oriente</title>
+    <title>Reto Naturalista 2026 - Zona Oriente CDMX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { --natural-green: #2d5a27; --leaf-green: #4f772d; --earth-brown: #604d3f; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; }
-        .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1500829243541-74b677fecc30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; background-position: center; }
+        
+        .hero { 
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), 
+            url('https://drive.google.com/thumbnail?id=1dd4b1gAAdz16GF9c2nfoFI2fmIDMlm86&sz=w1920'); 
+            background-size: cover; 
+            background-position: center; 
+        }
+        
         .btn-nature { background-color: var(--leaf-green); transition: 0.3s; }
         .btn-nature:hover { background-color: var(--natural-green); transform: scale(1.05); }
-        #popup { display: flex; }
+        
+        .masonry { column-count: 2; column-gap: 1rem; }
+        @media (min-width: 768px) { .masonry { column-count: 3; } }
+        @media (min-width: 1024px) { .masonry { column-count: 4; } }
+        .masonry img { break-inside: avoid; margin-bottom: 1rem; width: 100%; border-radius: 0.5rem; transition: transform 0.3s; cursor: pointer; }
+        .masonry img:hover { transform: scale(1.03); opacity: 0.9; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 relative">
 
-    <div id="popup" class="fixed inset-0 z-50 bg-black bg-opacity-70 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl p-6 md:p-8 w-[95%] max-w-md text-center shadow-2xl border-t-8 border-green-600">
+    <div id="popup" class="fixed inset-0 z-[60] bg-black bg-opacity-70 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 md:p-8 w-[95%] max-w-md text-center shadow-2xl border-t-8 border-green-600 overflow-y-auto max-h-[90vh]">
+            <img src="https://drive.google.com/thumbnail?id=1K0D_ZzYGwcenU6p332HioK709KJiGvGj&sz=w800" alt="Reto Naturalista" class="w-full h-auto rounded-lg mb-5 object-cover shadow-sm">
             <h2 class="text-2xl md:text-3xl font-bold text-green-800 mb-4">🌿 ¡Únete al Reto!</h2>
-            <p class="mb-6 text-sm md:text-base text-gray-600">Del <b>24 al 27 de Abril</b>, ayúdanos a romper el récord de 150,000 fotos en la CDMX y el Oriente. ¡Toda forma de vida cuenta!</p>
+            <p class="mb-4 text-sm md:text-base text-gray-600">Del <b>24 al 27 de Abril</b>, ayúdanos a romper el récord en la Zona Oriente de la CDMX. ¡Toda forma de vida cuenta!</p>
+            <p class="mb-6 text-sm text-green-700 font-semibold bg-green-50 p-3 rounded-lg border border-green-200">
+                📱 ¡El reto es para todos! No necesitas una cámara profesional, con la cámara de tu celular es suficiente para participar.
+            </p>
             <button onclick="document.getElementById('popup').style.display='none'" class="w-full btn-nature text-white px-6 py-3 rounded-full font-bold shadow-lg text-sm md:text-base">¡VAMOS A PARTICIPAR!</button>
+        </div>
+    </div>
+
+    <div id="park-modal" class="fixed inset-0 z-[70] bg-black bg-opacity-80 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 w-[95%] max-w-md text-center shadow-2xl relative">
+            <button onclick="closeParkModal()" class="absolute top-2 right-4 text-gray-500 hover:text-red-500 text-3xl font-bold">×</button>
+            <img id="park-modal-img" src="" alt="Parque" class="w-full h-48 md:h-56 object-cover rounded-lg mb-4 shadow">
+            <h3 id="park-modal-title" class="text-2xl font-bold text-green-800 mb-2">Nombre del Parque</h3>
+            <p id="park-modal-desc" class="text-gray-600 text-sm mb-6"></p>
+            <a id="park-modal-link" href="#" target="_blank" class="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg transition duration-300">
+                📍 Ver en Google Maps
+            </a>
+        </div>
+    </div>
+
+    <div id="gallery-modal" class="fixed inset-0 z-[80] bg-black bg-opacity-90 hidden flex-col items-center justify-center p-4">
+        <button onclick="closeGalleryModal()" class="absolute top-4 right-4 md:right-10 text-white hover:text-green-400 text-5xl font-bold transition">×</button>
+        <img id="gallery-modal-img" src="" alt="Observación Naturalista" class="max-w-full max-h-[55vh] md:max-h-[65vh] object-contain rounded-lg mb-6 shadow-2xl border-4 border-white">
+        <div class="bg-white rounded-xl p-5 md:p-6 text-center max-w-md w-full shadow-2xl border-b-4 border-green-600">
+            <h3 class="text-xl md:text-2xl font-bold text-green-800 mb-2 flex items-center justify-center">
+                📍 Ubicación: Parque Yautitla
+            </h3>
+            <p class="text-gray-700 text-sm md:text-base font-medium">
+                ¡Tú también puedes encontrar especies increíbles como esta explorando el Parque Yautitla durante el Reto Naturalista! Agudiza tu vista y acompáñanos.
+            </p>
         </div>
     </div>
 
     <nav class="bg-white shadow-md sticky top-0 z-40 relative">
         <div class="container mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <span class="text-xl md:text-2xl font-bold text-green-700">BioOriente 2026</span>
-            </div>
             
-            <div class="hidden md:flex items-center space-x-8 font-medium">
-                <a href="#pasos" class="hover:text-green-600">Cómo Participar</a>
-                <a href="#parques" class="hover:text-green-600">Dónde ir</a>
-                <a href="#consejos" class="hover:text-green-600">Consejos</a>
-                <a href="#registro" class="btn-nature text-white px-4 py-2 rounded-lg">Registro</a>
+            <div class="flex flex-col sm:flex-row items-center space-y-1 sm:space-y-0 sm:space-x-3">
+                <span class="text-lg md:text-2xl font-bold text-green-700 text-center sm:text-left leading-tight">Reto Naturalista CDMX Oriente</span>
+                <img src="https://static.inaturalist.org/sites/2-logo.svg?1708623494" alt="NaturaLista Logo" class="h-8 md:h-10 object-contain mx-auto">
             </div>
 
+            <div class="hidden md:flex items-center space-x-8 font-medium">
+                <a href="#pasos" class="hover:text-green-600">Cómo Participar</a>
+                <a href="#parques" class="hover:text-green-600">Zonas y Parques</a>
+                <a href="#galeria" class="hover:text-green-600">Inspiración</a>
+            </div>
             <div class="md:hidden">
                 <button id="menu-btn" class="text-green-700 focus:outline-none">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 </button>
             </div>
         </div>
-
         <div id="mobile-menu" class="hidden absolute w-full bg-white shadow-lg border-t flex-col space-y-4 p-6 font-medium text-center z-40">
             <a href="#pasos" class="block hover:text-green-600" onclick="toggleMenu()">Cómo Participar</a>
-            <a href="#parques" class="block hover:text-green-600" onclick="toggleMenu()">Dónde ir</a>
-            <a href="#consejos" class="block hover:text-green-600" onclick="toggleMenu()">Consejos</a>
-            <a href="#registro" class="block bg-green-600 text-white px-4 py-3 rounded-lg mt-2" onclick="toggleMenu()">Ir al Registro</a>
+            <a href="#parques" class="block hover:text-green-600" onclick="toggleMenu()">Zonas y Parques</a>
+            <a href="#galeria" class="block hover:text-green-600" onclick="toggleMenu()">Inspiración</a>
         </div>
     </nav>
 
     <header class="hero min-h-screen flex flex-col justify-center items-center text-center text-white px-4 py-20">
         <h1 class="text-4xl md:text-7xl font-extrabold mb-4 drop-shadow-lg leading-tight">Reto Naturalista <br class="md:hidden">2026</h1>
-        <p class="text-lg md:text-2xl max-w-2xl mb-8 font-light px-2">Transforma tu celular en una herramienta científica. ¡Del 24 al 27 de abril!</p>
-        <div class="bg-green-600 bg-opacity-90 p-3 md:p-4 rounded-xl text-base md:text-lg font-bold shadow-lg">
-            Meta Global: +150,000 Observaciones 📸
+        <p class="text-lg md:text-2xl max-w-3xl mb-4 font-light px-2">Transforma tu celular en una herramienta científica. ¡Del 24 al 27 de abril!</p>
+        <div class="bg-yellow-500 text-gray-900 px-6 py-3 rounded-full font-bold text-sm md:text-lg mb-8 shadow-xl transform rotate-1 inline-block">
+            📷 ¡No necesitas cámara profesional! Participa con cualquier celular, ¡el reto es para todos!
         </div>
     </header>
 
     <section id="pasos" class="py-16 md:py-20 container mx-auto px-4 md:px-6">
-        <h2 class="text-3xl md:text-4xl font-bold text-center text-green-900 mb-10">Pasos para participar</h2>
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-green-900 mb-10">Instrucciones a detalle para participar</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-center">
-            <div class="p-6 bg-white rounded-xl shadow-sm border-b-4 border-green-500">
+            <div class="p-6 bg-white rounded-xl shadow-sm border-b-4 border-green-500 flex flex-col items-center">
                 <div class="text-5xl mb-4">📱</div>
-                <h3 class="text-xl font-bold mb-2">1. Descarga la App</h3>
-                <p class="text-gray-600 text-sm md:text-base">Busca <b>iNaturalist</b> en tu tienda de apps y crea tu cuenta gratuita.</p>
+                <h3 class="text-xl font-bold mb-2">1. Descarga y Regístrate</h3>
+                <p class="text-gray-600 text-sm md:text-base mb-4">Descarga <b>iNaturalist</b>. Crea tu cuenta con un correo electrónico o redes sociales para empezar tu perfil como observador ciudadano.</p>
+                <div class="flex flex-col sm:flex-row gap-3 w-full justify-center mt-auto">
+                    <a href="https://play.google.com/store/apps/details?id=org.inaturalist.android" target="_blank" class="flex items-center justify-center bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                        <svg class="w-5 h-5 mr-2 text-green-400" fill="currentColor" viewBox="0 0 512 512"><path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+                        <span class="text-xs font-bold text-left leading-tight">Disponible en<br><span class="text-sm">Google Play</span></span>
+                    </a>
+                    <a href="https://apps.apple.com/app/inaturalist/id425812826" target="_blank" class="flex items-center justify-center bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+                        <span class="text-xs font-bold text-left leading-tight">Consíguelo en el<br><span class="text-sm">App Store</span></span>
+                    </a>
+                </div>
             </div>
-            <div class="p-6 bg-white rounded-xl shadow-sm border-b-4 border-green-500">
+            <div class="p-6 bg-white rounded-xl shadow-sm border-b-4 border-green-500 flex flex-col items-center">
                 <div class="text-5xl mb-4">📷</div>
-                <h3 class="text-xl font-bold mb-2">2. Toma Fotos</h3>
-                <p class="text-gray-600 text-sm md:text-base">Del 24 al 27 de abril, fotografía plantas, insectos o animales en tu zona.</p>
+                <h3 class="text-xl font-bold mb-2">2. Sal a Explorar y Fotografía</h3>
+                <p class="text-gray-600 text-sm md:text-base">Busca plantas, hongos, insectos o animales silvestres. <b>Activa el GPS</b> de tu celular al tomar la foto e intenta capturar varios ángulos nítidos.</p>
             </div>
-            <div class="p-6 bg-white rounded-xl shadow-sm border-b-4 border-green-500">
+            <div class="p-6 bg-white rounded-xl shadow-sm border-b-4 border-green-500 flex flex-col items-center">
                 <div class="text-5xl mb-4">📤</div>
-                <h3 class="text-xl font-bold mb-2">3. Sube y Comparte</h3>
-                <p class="text-gray-600 text-sm md:text-base">Sube tus fotos a la plataforma. Los expertos ayudarán a identificar la especie.</p>
+                <h3 class="text-xl font-bold mb-2">3. Únete al Proyecto y Sube</h3>
+                <p class="text-gray-600 text-sm md:text-base mb-4">Sube tus fotos a la app del <b>24 al 27 de abril</b>. Asegúrate de unirte al proyecto oficial entrando a este enlace:</p>
+                <a href="https://mexico.inaturalist.org/projects/reto-naturalista-primavera-2026-ciudad-de-mexico" target="_blank" class="block w-full bg-green-100 text-green-800 border border-green-300 rounded-lg p-3 font-bold text-sm hover:bg-green-200 transition shadow-sm mt-auto">
+                    👉 Proyecto Oficial Primavera 2026
+                </a>
             </div>
         </div>
     </section>
 
     <section id="parques" class="py-16 md:py-20 bg-green-50">
         <div class="container mx-auto px-4 md:px-6">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-green-900 mb-4">¿Dónde tomar fotos?</h2>
-            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto text-sm md:text-base">¡No solo en parques! Puedes participar desde el <b>jardín de tu casa</b>, la banqueta o los árboles de tu calle.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-green-900 mb-4">¿Dónde explorar en la Zona Oriente?</h2>
+            <p class="text-center text-gray-700 mb-10 max-w-4xl mx-auto text-sm md:text-base">Nuestro enfoque principal está en <b>Iztapalapa</b>. ¡Haz clic en los parques para ver su ubicación!</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-md border-l-4 border-green-600">
+                    <h3 class="font-bold text-green-800 text-2xl mb-4 flex items-center">📍 Parques de Iztapalapa</h3>
+                    <ul class="space-y-3 text-sm md:text-base text-gray-700">
+                        <li onclick="openParkModal('Parque Yautitla', 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=800&q=80', 'https://www.google.com/maps/search/?api=1&query=Parque+Yautitla+Iztapalapa', 'Av. de las Torres s/n, colonia San Miguel Teotongo. Excelente para encontrar gran diversidad de especies.')" 
+                            class="bg-green-100 p-4 rounded-lg border border-green-300 cursor-pointer hover:bg-green-200 hover:shadow-md transition transform hover:-translate-y-1">
+                            <span class="font-bold text-green-800 block text-lg">🌿 Parque Yautitla</span>
+                            <span class="text-xs text-gray-600">Av. de las Torres s/n, San Miguel Teotongo.</span>
+                        </li>
+                        <li onclick="openParkModal('Cerro de la Estrella', 'https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=800&q=80', 'https://www.google.com/maps/search/?api=1&query=Cerro+de+la+Estrella+Iztapalapa', 'Área natural protegida ideal para encontrar flora nativa, aves y reptiles en senderos.')" 
+                            class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-green-50 transition hover:shadow-md">
+                            <span class="font-bold text-green-700 block text-lg">⛰️ Parque Nacional Cerro de la Estrella</span>
+                        </li>
+                        <li onclick="openParkModal('Sierra de Santa Catarina', 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80', 'https://www.google.com/maps/search/?api=1&query=Sierra+de+Santa+Catarina+Iztapalapa', 'Cadena volcánica con zonas de conservación ecológica. Busca matorrales e insectos endémicos.')" 
+                            class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-green-50 transition hover:shadow-md">
+                            <span class="font-bold text-green-700 block text-lg">🌋 Sierra de Santa Catarina</span>
+                        </li>
+                        <li onclick="openParkModal('Parque Cuitláhuac', 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&w=800&q=80', 'https://www.google.com/maps/search/?api=1&query=Parque+Cuitlahuac+Iztapalapa', 'Gran extensión recuperada con humedales artificiales, patos y mucha vegetación joven.')" 
+                            class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-green-50 transition hover:shadow-md">
+                            <span class="font-bold text-green-700 block text-lg">🌳 Parque Cuitláhuac</span>
+                        </li>
+                        <li onclick="openParkModal('Utopía Meyehualco', 'https://images.unsplash.com/photo-1584479898061-15742e14f50d?auto=format&fit=crop&w=800&q=80', 'https://www.google.com/maps/search/?api=1&query=Utopia+Meyehualco+Iztapalapa', 'Un gran parque recreativo donde puedes documentar las especies adaptadas al entorno urbano.')" 
+                            class="bg-gray-50 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-green-50 transition hover:shadow-md">
+                            <span class="font-bold text-green-700 block text-lg">🦕 Utopía Meyehualco (Iztapasauria)</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="space-y-8">
+                    <div class="bg-gradient-to-r from-green-700 to-green-600 text-white p-6 md:p-8 rounded-xl shadow-lg transform transition hover:scale-[1.02]">
+                        <h3 class="font-bold text-2xl mb-2 text-center">🏠 ¡También participa desde casa!</h3>
+                        <p class="text-sm md:text-base mb-3 text-green-100">La naturaleza está en todas partes: árboles en tu banqueta, insectos en tu patio o plantas silvestres en tus macetas.</p>
+                        <ul class="space-y-2 text-sm">
+                            <li class="font-bold text-yellow-300">¡Asómate a la ventana y empieza a documentar!</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-blue-500">
+                        <h3 class="font-bold text-blue-800 text-xl mb-3 flex items-center">📍 Otras Alcaldías Cercanas</h3>
+                        <ul class="space-y-2 text-sm md:text-base text-gray-700">
+                            <li>• <b>Tláhuac:</b> Bosque de Tláhuac y Chinampas.</li>
+                            <li>• <b>Iztacalco:</b> Ciudad Deportiva Magdalena Mixhuca.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="galeria" class="py-16 md:py-20 bg-gray-900 text-white">
+        <div class="container mx-auto px-4 md:px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">📸 ¿Qué estamos buscando?</h2>
+            <p class="text-center text-gray-400 mb-10 max-w-2xl mx-auto">Toda la vida silvestre cuenta. Haz clic en las fotos para ver en dónde se tomaron estas increíbles especies.</p>
+            <div class="masonry">
+                <img onclick="openGalleryModal(this.src)" src="https://drive.google.com/thumbnail?id=1KYwqC0z_ZD4qafcivkKCEXn4prUsA_9T&sz=w800" alt="Muestra 1">
+                <img onclick="openGalleryModal(this.src)" src="https://drive.google.com/thumbnail?id=13u9uALz1yKaoPdbW5OYVQO8pNfZKvdF4&sz=w800" alt="Muestra 2">
+                <img onclick="openGalleryModal(this.src)" src="https://drive.google.com/thumbnail?id=1-dotM7rJsKctDR5pTCpQ_t-GX3PQOKB6&sz=w800" alt="Muestra 3">
+                <img onclick="openGalleryModal(this.src)" src="https://drive.google.com/thumbnail?id=1cKl5tvF-X-aWFaA52BOusu03asoyAes0&sz=w800" alt="Muestra 4">
+                <img onclick="openGalleryModal(this.src)" src="https://drive.google.com/thumbnail?id=1jkGaWM5kkaf2XpF2qU9j88rejj7bZbGr&sz=w800" alt="Muestra 5">
+                <img onclick="openGalleryModal(this.src)" src="https://drive.google.com/thumbnail?id=1XEzmDBYaNmJQajIXsbwOev7Ia2ZKIWa8&sz=w800" alt="Muestra 6">
+                <img onclick="openGalleryModal(this.src)" src="https://drive.google.com/thumbnail?id=1SPGUBQl1lgnPAmkWsyOechGVtgS8NqwJ&sz=w800" alt="Muestra 7">
+                <img onclick="openGalleryModal(this.src)" src="https://drive.google.com/thumbnail?id=1IuPTCZQYeaKCeDAHCfjIuggTyJP0LdQw&sz=w800" alt="Muestra 8">
+                <img onclick="openGalleryModal(this.src)" src="https://drive.google.com/thumbnail?id=1qTo6CMOeOWHvKE3ggNmlTzI8SmdhRasB&sz=w800" alt="Muestra 9">
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 bg-white text-center border-t">
+        <div class="container mx-auto px-4 overflow-hidden">
+            <p class="text-gray-500 mb-8 font-bold uppercase tracking-widest text-xs md:text-sm">Escuelas y Sedes Oficiales</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white p-5 rounded-lg shadow">
-                    <h4 class="font-bold text-green-700 text-lg">📍 Iztapalapa</h4>
-                    <ul class="mt-3 space-y-2 text-sm text-gray-700">
-                        <li>• Parque Yautitla (Sede principal)</li>
-                        <li>• Cerro de la Estrella</li>
-                        <li>• Parque Cuitláhuac</li>
-                    </ul>
-                </div>
-                <div class="bg-white p-5 rounded-lg shadow">
-                    <h4 class="font-bold text-green-700 text-lg">📍 Edomex Oriente</h4>
-                    <ul class="mt-3 space-y-2 text-sm text-gray-700">
-                        <li>• Chimalhuacán (Cerro de las Palomas)</li>
-                        <li>• Neza (Parque del Pueblo)</li>
-                        <li>• Chalco y Valle de Chalco</li>
-                    </ul>
-                </div>
-                <div class="bg-green-700 text-white p-5 rounded-lg shadow flex flex-col justify-center text-center">
-                    <p class="italic font-bold text-sm md:text-base">"Cualquier maceta con flores o árbol en tu casa es un micro-ecosistema. ¡Participa desde casa!"</p>
-                </div>
-            </div>
-        </div>
-    </section>
+            <div class="flex justify-center items-center gap-3 sm:gap-6 md:gap-8 mb-10 px-2 opacity-90 w-full overflow-x-auto pb-4 hide-scrollbar">
+                
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThgzLNCQZ99Cg9VTX9yTIPzdBoljG_ojmlvA&s" 
+                     alt="Logo Principal" 
+                     class="h-6 sm:h-8 md:h-10 lg:h-12 w-auto object-contain shrink-0">
 
-    <section id="consejos" class="py-16 md:py-20 container mx-auto px-4 md:px-6">
-        <h2 class="text-3xl md:text-4xl font-bold text-center text-green-900 mb-10">Consejos para fotos</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-center">
-            <div class="px-4">
-                <div class="bg-yellow-100 p-5 rounded-full inline-block mb-3 text-2xl">🔍</div>
-                <h4 class="font-bold text-lg">Enfoque claro</h4>
-                <p class="text-sm text-gray-600 mt-2">Asegúrate de que el sujeto esté bien enfocado para facilitar su identificación.</p>
-            </div>
-            <div class="px-4">
-                <div class="bg-yellow-100 p-5 rounded-full inline-block mb-3 text-2xl">📐</div>
-                <h4 class="font-bold text-lg">Varios ángulos</h4>
-                <p class="text-sm text-gray-600 mt-2">Toma fotos de las hojas, las flores y el tallo si es una planta.</p>
-            </div>
-            <div class="px-4">
-                <div class="bg-yellow-100 p-5 rounded-full inline-block mb-3 text-2xl">🚫</div>
-                <h4 class="font-bold text-lg">Solo silvestres</h4>
-                <p class="text-sm text-gray-600 mt-2">Evita subir fotos de tus mascotas o animales domésticos.</p>
-            </div>
-        </div>
-    </section>
+                <img src="https://www.sedema.cdmx.gob.mx/themes/base/assets/images/logos/Logo_Dependencia.png" 
+                     alt="SEDEMA CDMX" 
+                     class="h-6 sm:h-8 md:h-10 lg:h-12 w-auto object-contain shrink-0">
 
-    <section id="registro" class="py-16 md:py-20 bg-gray-900 text-white">
-        <div class="container mx-auto px-4 md:px-6 max-w-2xl">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">Regístrate en el Equipo</h2>
-            <form class="space-y-4">
-                <input type="text" placeholder="Nombre completo" class="w-full p-4 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 outline-none text-sm md:text-base">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <input type="number" placeholder="Edad" class="p-4 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 outline-none text-sm md:text-base w-full">
-                    <select class="p-4 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 outline-none text-sm md:text-base w-full">
-                        <option>Zona: Iztapalapa</option>
-                        <option>Zona: Chimalhuacán</option>
-                        <option>Zona: Neza</option>
-                        <option>Zona: Chalco / Valle</option>
-                        <option>Otro Municipio</option>
-                    </select>
-                </div>
-                <input type="email" placeholder="Correo electrónico" class="w-full p-4 rounded-lg bg-gray-800 border border-gray-700 focus:border-green-500 outline-none text-sm md:text-base">
-                <button type="button" class="w-full btn-nature py-4 mt-2 rounded-lg font-bold uppercase tracking-wider text-sm md:text-base">Unirme al Reto</button>
-            </form>
-        </div>
-    </section>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Logo_Alcald%C3%ADa_Iztapalapa.png" 
+                     alt="Alcaldía Iztapalapa" 
+                     class="h-6 sm:h-8 md:h-10 lg:h-12 w-auto object-contain shrink-0">
 
-    <footer class="py-10 bg-white text-center border-t">
-        <div class="container mx-auto px-4">
-            <p class="text-gray-500 mb-6 font-bold uppercase tracking-widest text-xs md:text-sm">Escuelas y Sedes Oficiales</p>
-            <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10 opacity-70">
-                <div class="font-bold text-lg md:text-xl text-blue-900 italic">TecNM</div>
-                <div class="font-bold text-lg md:text-xl text-green-800">Parque Yautitla</div>
-                <div class="font-bold text-lg md:text-xl text-gray-700">Iztapalapa III</div>
-                <div class="font-bold text-lg md:text-xl text-red-700 italic">Escorpiones Team</div>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj7fed4tcqQhukBKJIGY_qjX5hloAw7VonmQ&s" 
+                     alt="UAM" 
+                     class="h-6 sm:h-8 md:h-10 lg:h-12 w-auto object-contain shrink-0">
+
+                <img src="https://iztapalapa3.tecnm.mx/departamentos/planeacion/comuydif/logoiti3-letras-negras.png" 
+                     alt="TecNM Iztapalapa III" 
+                     class="h-8 sm:h-10 md:h-12 lg:h-14 w-auto object-contain shrink-0"> 
             </div>
-            <p class="mt-10 text-gray-400 text-xs md:text-sm">© 2026 Plataforma de Ciencia Ciudadana - Reto Naturalista Oriente.</p>
+
+            <p class="mt-4 text-gray-400 text-xs md:text-sm">© 2026 Plataforma de Ciencia Ciudadana - Reto Naturalista Oriente.</p>
         </div>
     </footer>
 
     <script>
         const btn = document.getElementById('menu-btn');
         const menu = document.getElementById('mobile-menu');
-
-        // Alternar menú al tocar el botón de hamburguesa
         btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
             menu.classList.toggle('flex');
         });
-
-        // Ocultar el menú al hacer clic en un enlace (para móviles)
         function toggleMenu() {
             if(!menu.classList.contains('hidden')) {
                 menu.classList.add('hidden');
                 menu.classList.remove('flex');
             }
+        }
+        function openParkModal(title, imgUrl, mapsUrl, description) {
+            document.getElementById('park-modal-title').innerText = title;
+            document.getElementById('park-modal-img').src = imgUrl;
+            document.getElementById('park-modal-link').href = mapsUrl;
+            document.getElementById('park-modal-desc').innerText = description;
+            document.getElementById('park-modal').classList.remove('hidden');
+            document.getElementById('park-modal').classList.add('flex');
+        }
+        function closeParkModal() {
+            document.getElementById('park-modal').classList.add('hidden');
+            document.getElementById('park-modal').classList.remove('flex');
+        }
+        function openGalleryModal(imgUrl) {
+            document.getElementById('gallery-modal-img').src = imgUrl;
+            document.getElementById('gallery-modal').classList.remove('hidden');
+            document.getElementById('gallery-modal').classList.add('flex');
+        }
+        function closeGalleryModal() {
+            document.getElementById('gallery-modal').classList.add('hidden');
+            document.getElementById('gallery-modal').classList.remove('flex');
         }
     </script>
 </body>
